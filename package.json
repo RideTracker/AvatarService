@@ -1,0 +1,15 @@
+{
+  "name": "ridetrackeravatars",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "upload": "node src/upload.js"
+  },
+  "author": "",
+  "type": "module",
+  "license": "ISC",
+  "dependencies": {
+    "sharp": "^0.32.0"
+  }
+}
