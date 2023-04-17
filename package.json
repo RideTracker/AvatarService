@@ -10,6 +10,7 @@
   "type": "module",
   "license": "ISC",
   "dependencies": {
-    "sharp": "^0.32.0"
+    "sharp": "^0.32.0",
+    "uuid": "^9.0.0"
   }
 }

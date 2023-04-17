@@ -1,4 +1,5 @@
 import fs from "fs";
+import { v4 as uuidv4 } from "uuid";
 
 async function getDirectUploadUrl(name) {
     const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/images/v2/direct_upload`, {
@@ -59,20 +60,22 @@ async function upload() {
                 return image.endsWith(".png") && !image.endsWith("Preview.png");
             });
 
+            const avatarId = uuidv4();
+
             {
                 const { id, url } = await getDirectUploadUrl(avatar);
         
-                console.log(avatar + ": " + id);
-        
                 await uploadImage(`${avatar} Preview.png`, `./assets/${directory}/${avatar}/${avatar} Preview.png`, url);
+        
+                console.log(`INSERT INTO avatars (id, name, type, image, timestamp) VALUES ("${avatarId}", "${avatar}", "unknown", "${id}", "${Date.now()}");`);
             }
 
             for(let image of images) {
                 const { id, url } = await getDirectUploadUrl(avatar);
 
-                console.log(image + ": " + id);
-        
                 await uploadImage(image, `./assets/${directory}/${avatar}/${image}`, url);
+        
+                console.log(`INSERT INTO avatar_images (id, avatar, type, image, layer, color_index, default_color, timestamp) VALUES ("${uuidv4()}", "${avatarId}", "unknown", "${id}", "${image.replace(avatar + " ", "").replace(".png", "")}", NULL, NULL, "${Date.now()}");`);
             }
 
             console.log(" ");
