@@ -75,7 +75,7 @@ async function upload() {
 
                 await uploadImage(image, `./assets/${directory}/${avatar}/${image}`, url);
         
-                console.log(`INSERT INTO avatar_images (id, avatar, type, image, layer, color_index, default_color, timestamp) VALUES ("${uuidv4()}", "${avatarId}", "unknown", "${id}", "${image.replace(avatar + " ", "").replace(".png", "")}", NULL, NULL, "${Date.now()}");`);
+                console.log(`INSERT INTO avatar_images (id, avatar, type, image, layer, color_index, default_color, timestamp) VALUES ("${uuidv4()}", "${avatarId}", "unknown", "${id}", "${image.replace(avatar + " Layer ", "").replace(".png", "")}", NULL, NULL, "${Date.now()}");`);
             }
 
             console.log(" ");
