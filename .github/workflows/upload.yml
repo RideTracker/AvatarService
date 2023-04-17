@@ -1,0 +1,20 @@
+run-name: Upload to Cloudflare Images
+
+on: workflow_dispatch
+
+jobs:
+  test:
+    name: Upload images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Run upload script
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_IMAGES_TOKEN: ${{ secrets.CLOUDFLARE_API_IMAGES_TOKEN }}
+        run: npm run upload
