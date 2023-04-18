@@ -136,13 +136,13 @@ async function upload() {
                 for(let image of images) {
                     const imageUpload = await getDirectUploadUrl();
                     
-                    const layer = parseInt(image.replace(avatar + " Layer ", "").replace(".png", ""));
+                    const layer = parseInt(image.replace(name + " Layer ", "").replace(".png", ""));
 
                     const layerSettings = manifest.layers.find((layer) => layer.index === layer);
 
                     await createAvatarImage(id, imageUpload.id, layer, layerSettings?.colorIndex);
 
-                    await uploadImage(image, `./assets/${directory}/${avatar}/${image}`, imageUpload.url);
+                    await uploadImage(image, `./assets/${directory}/${name}/${image}`, imageUpload.url);
                 }
             }
 
