@@ -1,6 +1,8 @@
 import fs from "fs";
 
 async function getDirectUploadUrl() {
+    console.log("getDirectUploadUrl");
+
     const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/images/v2/direct_upload`, {
         method: "POST",
         
@@ -24,6 +26,8 @@ async function getDirectUploadUrl() {
 };
 
 async function uploadImage(name, path, url) {
+    console.log("uploadImage");
+
     const mimeType = "image/png";
     
     const buffer = fs.readFileSync(path);
@@ -49,6 +53,8 @@ async function uploadImage(name, path, url) {
 };
 
 async function createAvatar(name, type, image) {
+    console.log("createAvatar");
+
     const url = new URL("/api/avatars", process.env.SERVICE_API_BASE);
 
     const response = await fetch(url, {
@@ -69,6 +75,8 @@ async function createAvatar(name, type, image) {
 };
 
 async function createAvatarColor(avatar, type, index, defaultColor) {
+    console.log("createAvatarColor");
+
     const url = new URL(`/api/avatars/${avatar}/color`, process.env.SERVICE_API_BASE);
 
     const response = await fetch(url, {
@@ -89,6 +97,8 @@ async function createAvatarColor(avatar, type, index, defaultColor) {
 };
 
 async function createAvatarImage(avatar, image, index, colorIndex) {
+    console.log("createAvatarImage");
+
     const url = new URL(`/api/avatars/${avatar}/image`, process.env.SERVICE_API_BASE);
 
     const response = await fetch(url, {
