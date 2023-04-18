@@ -17,4 +17,6 @@ jobs:
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_IMAGES_TOKEN: ${{ secrets.CLOUDFLARE_API_IMAGES_TOKEN }}
+          SERVICE_API_BASE: ${{ secrets SERVICE_API_BASE }}
+          SERVICE_API_TOKEN: ${{ secrets.SERVICE_API_TOKEN }}
         run: npm run upload
