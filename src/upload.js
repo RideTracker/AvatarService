@@ -103,7 +103,7 @@ async function createAvatarImage(avatar, image, index, colorIndex) {
     const result = await response.json();
 
     if(!result.success)
-        console.error("Failed to create avatar image", result);
+        console.error("Failed to create avatar image", result, JSON.stringify({ image, index, colorIndex }));
 
     return result.id;
 };
@@ -140,7 +140,7 @@ async function upload() {
 
                     const layerSettings = manifest.layers.find((layer) => layer.index === layer);
 
-                    await createAvatarImage(id, imageUpload.id, layer, layerSettings?.colorIndex);
+                    await createAvatarImage(id, imageUpload.id, layer, layerSettings?.colorIndex ?? null);
 
                     await uploadImage(image, `./assets/${directory}/${name}/${image}`, imageUpload.url);
                 }
