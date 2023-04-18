@@ -1,29 +1,37 @@
 {
     "type": "jersey",
 
+    "colors": [
+        {
+            "type": "primary",
+            "defaultColor": "#294C3F"
+        },
+
+        {
+            "type": "secondary",
+            "defaultColor": "#ED1C24"
+        }
+    ],
+
     "layers": [
         {
-            "layer": 2,
-            "colorIndex": 1,
-            "defaultColor": "#294C3F"
+            "index": 2,
+            "colorIndex": 1
         },
         
         {
-            "layer": 3,
-            "colorIndex": 2,
-            "defaultColor": "#ED1C24"
+            "index": 3,
+            "colorIndex": 2
         },
         
         {
-            "layer": 4,
-            "colorIndex": 1,
-            "defaultColor": "#294C3F"
+            "index": 4,
+            "colorIndex": 1
         },
         
         {
-            "layer": 6,
-            "colorIndex": 1,
-            "defaultColor": "#294C3F"
+            "index": 6,
+            "colorIndex": 1
         }
     ]
 }

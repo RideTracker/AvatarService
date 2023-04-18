@@ -4,32 +4,32 @@
     "colors": [
         {
             "type": "skin",
-            "defaultColor": "#F1C8BF"
+            "defaultColor": "#F9B3A1"
         },
-
+        
         {
             "type": "lips",
-            "defaultColor": "#F37E8B"
-        },
-
-        {
-            "type": "eyelashes",
-            "defaultColor": "#231F20"
+            "defaultColor": "#DE9390"
         },
 
         {
             "type": "eyes",
-            "defaultColor": "#3C2415"
+            "defaultColor": "#594A42"
+        },
+
+        {
+            "type": "eyelashes",
+            "defaultColor": "#151415"
         },
 
         {
             "type": "eyebrows",
-            "defaultColor": "#231F20"
+            "defaultColor": "#151415"
         },
 
         {
             "type": "hair",
-            "defaultColor": "#231F20"
+            "defaultColor": "#151415"
         }
     ],
 
@@ -38,19 +38,14 @@
             "index": 1,
             "colorIndex": 1
         },
-
-        {
-            "index": 3,
-            "colorIndex": 1
-        },
         
         {
-            "index": 4,
+            "index": 3,
             "colorIndex": 2
         },
         
         {
-            "index": 5,
+            "index": 4,
             "colorIndex": 3
         },
         
@@ -60,12 +55,12 @@
         },
         
         {
-            "index": 8,
+            "index": 7,
             "colorIndex": 5
         },
         
         {
-            "index": 9,
+            "index": 8,
             "colorIndex": 6
         }
     ]

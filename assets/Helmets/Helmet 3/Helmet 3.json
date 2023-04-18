@@ -1,11 +1,17 @@
 {
     "type": "helmet",
 
+    "colors": [
+        {
+            "type": "primary",
+            "defaultColor": "#D4DE25"
+        }
+    ],
+
     "layers": [
         {
-            "layer": 1,
-            "colorIndex": 1,
-            "defaultColor": "#D4DE25"
+            "index": 1,
+            "colorIndex": 1
         }
     ]
 }

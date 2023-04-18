@@ -1,7 +1,6 @@
 import fs from "fs";
-import { v4 as uuidv4 } from "uuid";
 
-async function getDirectUploadUrl(name) {
+async function getDirectUploadUrl() {
     const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/images/v2/direct_upload`, {
         method: "POST",
         
@@ -49,35 +48,106 @@ async function uploadImage(name, path, url) {
     }
 };
 
+async function createAvatar(name, type, image) {
+    const url = new URL("/api/avatars", process.env.SERVICE_API_BASE);
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${process.env.SERVICE_API_TOKEN}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, type, image })
+    })
+
+    const result = await response.json();
+
+    if(!result.success)
+        console.error("Failed to create avatar", result);
+
+    return result.avatar.id;
+};
+
+async function createAvatarColor(avatar, type, index, defaultColor) {
+    const url = new URL(`/api/avatars/${avatar}/color`, process.env.SERVICE_API_BASE);
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${process.env.SERVICE_API_TOKEN}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ type, index, defaultColor })
+    })
+
+    const result = await response.json();
+
+    if(!result.success)
+        console.error("Failed to create avatar color", result);
+
+    return result.id;
+};
+
+async function createAvatarImage(avatar, image, layer, colorIndex) {
+    const url = new URL(`/api/avatars/${avatar}/image`, process.env.SERVICE_API_BASE);
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${process.env.SERVICE_API_TOKEN}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ image, index, colorIndex })
+    })
+
+    const result = await response.json();
+
+    if(!result.success)
+        console.error("Failed to create avatar image", result);
+
+    return result.id;
+};
+
 async function upload() {
     const directories = fs.readdirSync("./assets");
 
     for(let directory of directories) {
-        const avatars = fs.readdirSync(`./assets/${directory}/`);
+        const names = fs.readdirSync(`./assets/${directory}/`);
 
-        for(let avatar of avatars) {
-            const images = fs.readdirSync(`./assets/${directory}/${avatar}/`).filter((image) => {
+        for(let name of names) {
+            const previewImage = await getDirectUploadUrl();
+            const manifest = JSON.parse(fs.readFileSync(`./assets/${directory}/${name}/${name}.json`));
+
+            const id = await createAvatar(name, manifest.type, previewImage.id)
+
+            await uploadImage(`${name} Preview.png`, `./assets/${directory}/${name}/${name} Preview.png`, previewImage.url);
+
+            if(manifest.colors) {
+                for(let index = 0; index < manifest.colors.length; index++) {
+                    await createAvatarColor(id, manifest.colors[index].type, index + 1, manifest.colors[index].defaultColor);
+                }
+            }
+
+            const images = fs.readdirSync(`./assets/${directory}/${name}/`).filter((image) => {
                 return image.endsWith(".png") && !image.endsWith("Preview.png");
             });
 
-            const avatarId = uuidv4();
-
             {
-                const { id, url } = await getDirectUploadUrl(avatar);
-        
-                await uploadImage(`${avatar} Preview.png`, `./assets/${directory}/${avatar}/${avatar} Preview.png`, url);
-        
-                console.log(`INSERT INTO avatars (id, name, type, image, timestamp) VALUES ("${avatarId}", "${avatar}", "unknown", "${id}", "${Date.now()}");`);
+                for(let image of images) {
+                    const imageUpload = await getDirectUploadUrl();
+                    
+                    const layer = parseInt(image.replace(avatar + " Layer ", "").replace(".png", ""));
+
+                    const layerSettings = manifest.layers.find((layer) => layer.index === layer);
+
+                    await createAvatarImage(id, imageUpload.id, layer, layerSettings?.colorIndex);
+
+                    await uploadImage(image, `./assets/${directory}/${avatar}/${image}`, imageUpload.url);
+                }
             }
 
-            for(let image of images) {
-                const { id, url } = await getDirectUploadUrl(avatar);
-
-                await uploadImage(image, `./assets/${directory}/${avatar}/${image}`, url);
-        
-                console.log(`INSERT INTO avatar_images (id, avatar, type, image, layer, color_index, default_color, timestamp) VALUES ("${uuidv4()}", "${avatarId}", "unknown", "${id}", "${image.replace(avatar + " Layer ", "").replace(".png", "")}", NULL, NULL, "${Date.now()}");`);
-            }
-
+            console.log(`${name}: ${id}`);
+            console.log(`${name}: ${manifest.colors.length} colors, ${images.length} images`);
             console.log(" ");
         }
     }

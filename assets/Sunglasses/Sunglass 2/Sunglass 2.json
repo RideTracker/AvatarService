@@ -1,10 +1,9 @@
 {
-    "type": "helmet",
+    "type": "sunglass",
 
     "colors": [
         {
-            "type": "primary",
-            "defaultColor": "#D1D3D4"
+            "type": "visor"
         }
     ],
 
