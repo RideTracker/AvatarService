@@ -88,7 +88,7 @@ async function createAvatarColor(avatar, type, index, defaultColor) {
     return result.id;
 };
 
-async function createAvatarImage(avatar, image, layer, colorIndex) {
+async function createAvatarImage(avatar, image, index, colorIndex) {
     const url = new URL(`/api/avatars/${avatar}/image`, process.env.SERVICE_API_BASE);
 
     const response = await fetch(url, {
