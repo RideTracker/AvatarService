@@ -10,6 +10,7 @@
   "type": "module",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.0.3",
     "sharp": "^0.32.0",
     "uuid": "^9.0.0"
   }

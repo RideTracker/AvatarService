@@ -18,16 +18,6 @@
         },
 
         {
-            "type": "eyelashes",
-            "defaultColor": "#151415"
-        },
-
-        {
-            "type": "eyebrows",
-            "defaultColor": "#151415"
-        },
-
-        {
             "type": "hair",
             "defaultColor": "#151415"
         }
@@ -56,12 +46,12 @@
         
         {
             "index": 7,
-            "colorIndex": 5
+            "colorIndex": 4
         },
         
         {
             "index": 8,
-            "colorIndex": 6
+            "colorIndex": 4
         }
     ]
 }

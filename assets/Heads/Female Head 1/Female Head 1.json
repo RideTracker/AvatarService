@@ -13,23 +13,13 @@
         },
 
         {
-            "type": "eyelashes",
+            "type": "hair",
             "defaultColor": "#231F20"
         },
 
         {
             "type": "eyes",
             "defaultColor": "#3C2415"
-        },
-
-        {
-            "type": "eyebrows",
-            "defaultColor": "#231F20"
-        },
-
-        {
-            "type": "hair",
-            "defaultColor": "#231F20"
         }
     ],
 
@@ -61,12 +51,12 @@
         
         {
             "index": 8,
-            "colorIndex": 5
+            "colorIndex": 3
         },
         
         {
             "index": 9,
-            "colorIndex": 6
+            "colorIndex": 3
         }
     ]
 }

@@ -1,3 +1,6 @@
+import * as dotenv from "dotenv";
+dotenv.config();
+
 import fs from "fs";
 
 async function getDirectUploadUrl() {
