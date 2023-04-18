@@ -83,7 +83,7 @@ async function createAvatarColor(avatar, type, index, defaultColor) {
     const result = await response.json();
 
     if(!result.success)
-        console.error("Failed to create avatar color", result);
+        console.error("Failed to create avatar color", result, JSON.stringify({ type, index, defaultColor }));
 
     return result.id;
 };
