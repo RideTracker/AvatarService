@@ -151,7 +151,9 @@ async function upload() {
                     
                     const layer = parseInt(image.replace(name + " Layer ", "").replace(".png", ""));
 
-                    const layerSettings = manifest.layers.find((layer) => layer.index === layer);
+                    const layerSettings = manifest.layers.find((_layer) => _layer.index === layer);
+
+                    console.log("layer settings", layerSettings);
 
                     await createAvatarImage(id, imageUpload.id, layer, layerSettings?.colorIndex ?? null);
 

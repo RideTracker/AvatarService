@@ -1,0 +1,52 @@
+{
+    "type": "head",
+
+    "colors": [
+        {
+            "type": "skin",
+            "defaultColor": "#FAC1BB"
+        },
+
+        {
+            "type": "lips",
+            "defaultColor": "#E77F84"
+        },
+
+        {
+            "type": "hair",
+            "defaultColor": "#60403B"
+        },
+
+        {
+            "type": "eyes",
+            "defaultColor": "#1B75BC"
+        }
+    ],
+
+    "layers": [
+        {
+            "index": 1,
+            "colorIndex": 1
+        },
+
+        {
+            "index": 3,
+            "colorIndex": 2
+        },
+        
+        {
+            "index": 6,
+            "colorIndex": 1
+        },
+        
+        {
+            "index": 7,
+            "colorIndex": 3
+        },
+        
+        {
+            "index": 4,
+            "colorIndex": 4
+        }
+    ]
+}
