@@ -146,63 +146,78 @@ async function createAvatarImage(avatar, image, index, colorType) {
     return result;
 };
 
-async function upload() {
+async function upload(type, name) {
+    const previewImage = await getDirectUploadUrl();
+    const manifest = JSON.parse(fs.readFileSync(`./assets/${type}/${name}/${name}.json`));
+
+    const avatarResult = await createAvatar(name, manifest.type, previewImage.id);
+
+    if(avatarResult.existingAvatar) {
+        await deleteImage(avatarResult.existingAvatar.image);
+        
+        for(let avatarImage of avatarResult.existingAvatar.images)
+            await deleteImage(avatarImage.image);
+    }
+    
+    const id = avatarResult.avatar.id;
+
+    await uploadImage(`${name} Preview.png`, `./assets/${type}/${name}/${name} Preview.png`, previewImage.url);
+
+    if(manifest.colors) {
+        for(let index = 0; index < manifest.colors.length; index++) {
+            await createAvatarColor(id, manifest.colors[index].type, index, manifest.colors[index].defaultColor);
+        }
+    }
+
+    const images = fs.readdirSync(`./assets/${type}/${name}/`).filter((image) => {
+        return image.endsWith(".png") && !image.endsWith("Preview.png");
+    });
+
+    {
+        for(let image of images) {
+            const imageUpload = await getDirectUploadUrl();
+            
+            const layer = parseInt(image.replace(name + " Layer ", "").replace(".png", ""));
+
+            const layerSettings = manifest.layers.find((_layer) => _layer.index === layer);
+
+            console.log("layer settings", layerSettings);
+
+            await createAvatarImage(id, imageUpload.id, layer, layerSettings?.colorType ?? null);
+
+            if(avatarResult.existingAvatar)
+                await deleteImage(avatarResult.existingAvatar.image);
+
+            await uploadImage(image, `./assets/${type}/${name}/${image}`, imageUpload.url);
+        }
+    }
+
+    console.log(`${name}: ${id}`);
+    console.log(`${name}: ${manifest.colors.length} colors, ${images.length} images`);
+    console.log(" ");
+};
+
+async function uploadAll() {
     const directories = fs.readdirSync("./assets");
 
     for(let directory of directories) {
         const names = fs.readdirSync(`./assets/${directory}/`);
 
-        names.forEach(async (name) => {
-            const previewImage = await getDirectUploadUrl();
-            const manifest = JSON.parse(fs.readFileSync(`./assets/${directory}/${name}/${name}.json`));
-
-            const avatarResult = await createAvatar(name, manifest.type, previewImage.id);
-
-            if(avatarResult.existingAvatar) {
-                await deleteImage(avatarResult.existingAvatar.image);
-                
-                for(let avatarImage of avatarResult.existingAvatar.images)
-                    await deleteImage(avatarImage.image);
-            }
-            
-            const id = avatarResult.avatar.id;
-
-            await uploadImage(`${name} Preview.png`, `./assets/${directory}/${name}/${name} Preview.png`, previewImage.url);
-
-            if(manifest.colors) {
-                for(let index = 0; index < manifest.colors.length; index++) {
-                    await createAvatarColor(id, manifest.colors[index].type, index, manifest.colors[index].defaultColor);
-                }
-            }
-
-            const images = fs.readdirSync(`./assets/${directory}/${name}/`).filter((image) => {
-                return image.endsWith(".png") && !image.endsWith("Preview.png");
-            });
-
-            {
-                for(let image of images) {
-                    const imageUpload = await getDirectUploadUrl();
-                    
-                    const layer = parseInt(image.replace(name + " Layer ", "").replace(".png", ""));
-
-                    const layerSettings = manifest.layers.find((_layer) => _layer.index === layer);
-
-                    console.log("layer settings", layerSettings);
-
-                    await createAvatarImage(id, imageUpload.id, layer, layerSettings?.colorType ?? null);
-
-                    if(avatarResult.existingAvatar)
-                        await deleteImage(avatarResult.existingAvatar.image);
-
-                    await uploadImage(image, `./assets/${directory}/${name}/${image}`, imageUpload.url);
-                }
-            }
-
-            console.log(`${name}: ${id}`);
-            console.log(`${name}: ${manifest.colors.length} colors, ${images.length} images`);
-            console.log(" ");
-        })
+        for(let name of names) {
+            await upload(directory, name);
+        }
     }
 };
 
-upload();
+if(!process.argv.length)
+    throw new Error("missing arguments, enter --all or specify avatar by type:name, e.g. Heads:Female Head 1");
+
+if(process.argv[0] === "--all")
+    uploadAll();
+else {
+    for(let arg of process.argv) {
+        const [ type, name ] = arg.split(':');
+        
+        upload(type, name);
+    } 
+}
