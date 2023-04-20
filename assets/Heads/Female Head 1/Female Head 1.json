@@ -9,8 +9,8 @@
         },
 
         {
-            "type": "lips",
-            "defaultColor": "#F37E8B"
+            "type": "skin",
+            "defaultColor": "#F1C8BF"
         },
 
         {
@@ -19,8 +19,8 @@
         },
 
         {
-            "type": "skin",
-            "defaultColor": "#F1C8BF"
+            "type": "lips",
+            "defaultColor": "#F37E8B"
         }
     ],
 

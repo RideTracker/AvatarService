@@ -147,6 +147,8 @@ async function createAvatarImage(avatar, image, index, colorType) {
 };
 
 async function upload(type, name) {
+    console.log("uploading " + name);
+
     const previewImage = await getDirectUploadUrl();
     const manifest = JSON.parse(fs.readFileSync(`./assets/${type}/${name}/${name}.json`));
 
@@ -209,15 +211,14 @@ async function uploadAll() {
     }
 };
 
-if(!process.argv.length)
-    throw new Error("missing arguments, enter --all or specify avatar by type:name, e.g. Heads:Female Head 1");
+const arg = process.argv.filter((_, index) => index > 1).join(" ");
 
-if(process.argv[0] === "--all")
+if(arg === "all")
     uploadAll();
-else {
-    for(let arg of process.argv) {
-        const [ type, name ] = arg.split(':');
-        
-        upload(type, name);
-    } 
+else if(arg.includes('/')) {
+    const [ type, name ] = arg.split('/');
+    
+    upload(type, name);
 }
+else
+    throw new Error("missing arguments, enter all or specify avatar by type/name, e.g. Heads/Female Head 1");
