@@ -28,6 +28,31 @@ async function getDirectUploadUrl() {
     };
 };
 
+async function deleteImage(image) {
+    console.log("deleteImage");
+
+    try {
+        const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/images/v1/${image}`, {
+            method: "DELETE",
+            
+            headers: {
+                "Authorization": `Bearer ${process.env.CLOUDFLARE_API_IMAGES_TOKEN}`
+            }
+        });
+    
+        const content = await response.json();
+    
+        if(!content.success) {
+            console.error(content);
+    
+            throw new Error("Failed to delete image", content);
+        }
+    }
+    catch {
+        console.warn("failed to delete image", image, "probably doesn't exist");
+    }
+};
+
 async function uploadImage(name, path, url) {
     console.log("uploadImage");
 
@@ -74,7 +99,7 @@ async function createAvatar(name, type, image) {
     if(!result.success)
         console.error("Failed to create avatar", result);
 
-    return result.avatar.id;
+    return result;
 };
 
 async function createAvatarColor(avatar, type, index, defaultColor) {
@@ -118,7 +143,7 @@ async function createAvatarImage(avatar, image, index, colorIndex) {
     if(!result.success)
         console.error("Failed to create avatar image", result, JSON.stringify({ image, index, colorIndex }));
 
-    return result.id;
+    return result;
 };
 
 async function upload() {
@@ -127,11 +152,20 @@ async function upload() {
     for(let directory of directories) {
         const names = fs.readdirSync(`./assets/${directory}/`);
 
-        for(let name of names) {
+        names.forEach(async (name) => {
             const previewImage = await getDirectUploadUrl();
             const manifest = JSON.parse(fs.readFileSync(`./assets/${directory}/${name}/${name}.json`));
 
-            const id = await createAvatar(name, manifest.type, previewImage.id)
+            const avatarResult = await createAvatar(name, manifest.type, previewImage.id);
+
+            if(avatarResult.existingAvatar) {
+                await deleteImage(avatarResult.existingAvatar.image);
+                
+                for(let avatarImage of avatarResult.existingAvatar.images)
+                    await deleteImage(avatarImage.image);
+            }
+            
+            const id = avatarResult.avatar.id;
 
             await uploadImage(`${name} Preview.png`, `./assets/${directory}/${name}/${name} Preview.png`, previewImage.url);
 
@@ -157,6 +191,9 @@ async function upload() {
 
                     await createAvatarImage(id, imageUpload.id, layer, layerSettings?.colorIndex ?? null);
 
+                    if(avatarResult.existingAvatar)
+                        await deleteImage(avatarResult.existingAvatar.image);
+
                     await uploadImage(image, `./assets/${directory}/${name}/${image}`, imageUpload.url);
                 }
             }
@@ -164,7 +201,7 @@ async function upload() {
             console.log(`${name}: ${id}`);
             console.log(`${name}: ${manifest.colors.length} colors, ${images.length} images`);
             console.log(" ");
-        }
+        })
     }
 };
 
