@@ -16,12 +16,12 @@
     "layers": [
         {
             "index": 1,
-            "colorIndex": 1
+            "colorType": "primary"
         },
         
         {
             "index": 2,
-            "colorIndex": 2
+            "colorType": "secondary"
         }
     ]
 }

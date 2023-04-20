@@ -11,12 +11,12 @@
     "layers": [
         {
             "layer": 1,
-            "colorIndex": 1
+            "colorType": "primary"
         },
         
         {
             "layer": 3,
-            "colorIndex": 1
+            "colorType": "primary"
         }
     ]
 }

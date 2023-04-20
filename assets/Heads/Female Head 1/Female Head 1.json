@@ -2,9 +2,10 @@
     "type": "head",
 
     "colors": [
+
         {
-            "type": "skin",
-            "defaultColor": "#F1C8BF"
+            "type": "hair",
+            "defaultColor": "#231F20"
         },
 
         {
@@ -13,50 +14,50 @@
         },
 
         {
-            "type": "hair",
-            "defaultColor": "#231F20"
+            "type": "eyes",
+            "defaultColor": "#3C2415"
         },
 
         {
-            "type": "eyes",
-            "defaultColor": "#3C2415"
+            "type": "skin",
+            "defaultColor": "#F1C8BF"
         }
     ],
 
     "layers": [
         {
             "index": 1,
-            "colorIndex": 1
+            "colorType": "skin"
         },
 
         {
             "index": 3,
-            "colorIndex": 1
+            "colorType": "skin"
         },
         
         {
             "index": 4,
-            "colorIndex": 2
+            "colorType": "lips"
         },
         
         {
             "index": 5,
-            "colorIndex": 3
+            "colorType": "hair"
         },
         
         {
             "index": 6,
-            "colorIndex": 4
+            "colorType": "eyes"
         },
         
         {
             "index": 8,
-            "colorIndex": 3
+            "colorType": "hair"
         },
         
         {
             "index": 9,
-            "colorIndex": 3
+            "colorType": "hair"
         }
     ]
 }

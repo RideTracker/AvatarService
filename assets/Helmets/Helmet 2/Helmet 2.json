@@ -11,7 +11,7 @@
     "layers": [
         {
             "index": 2,
-            "colorIndex": 1
+            "colorType": "primary"
         }
     ]
 }

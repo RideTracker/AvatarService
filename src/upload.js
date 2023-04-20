@@ -124,7 +124,7 @@ async function createAvatarColor(avatar, type, index, defaultColor) {
     return result.id;
 };
 
-async function createAvatarImage(avatar, image, index, colorIndex) {
+async function createAvatarImage(avatar, image, index, colorType) {
     console.log("createAvatarImage");
 
     const url = new URL(`/api/avatars/${avatar}/image`, process.env.SERVICE_API_BASE);
@@ -135,13 +135,13 @@ async function createAvatarImage(avatar, image, index, colorIndex) {
             "Authorization": `Bearer ${process.env.SERVICE_API_TOKEN}`,
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ image, index, colorIndex })
+        body: JSON.stringify({ image, index, colorType })
     })
 
     const result = await response.json();
 
     if(!result.success)
-        console.error("Failed to create avatar image", result, JSON.stringify({ image, index, colorIndex }));
+        console.error("Failed to create avatar image", result, JSON.stringify({ image, index, colorType }));
 
     return result;
 };
@@ -171,7 +171,7 @@ async function upload() {
 
             if(manifest.colors) {
                 for(let index = 0; index < manifest.colors.length; index++) {
-                    await createAvatarColor(id, manifest.colors[index].type, index + 1, manifest.colors[index].defaultColor);
+                    await createAvatarColor(id, manifest.colors[index].type, index, manifest.colors[index].defaultColor);
                 }
             }
 
@@ -189,7 +189,7 @@ async function upload() {
 
                     console.log("layer settings", layerSettings);
 
-                    await createAvatarImage(id, imageUpload.id, layer, layerSettings?.colorIndex ?? null);
+                    await createAvatarImage(id, imageUpload.id, layer, layerSettings?.colorType ?? null);
 
                     if(avatarResult.existingAvatar)
                         await deleteImage(avatarResult.existingAvatar.image);

@@ -16,22 +16,22 @@
     "layers": [
         {
             "index": 2,
-            "colorIndex": 1
+            "colorType": "primary"
         },
         
         {
             "index": 3,
-            "colorIndex": 2
+            "colorType": "secondary"
         },
         
         {
             "index": 4,
-            "colorIndex": 1
+            "colorType": "primary"
         },
         
         {
             "index": 6,
-            "colorIndex": 1
+            "colorType": "primary"
         }
     ]
 }
