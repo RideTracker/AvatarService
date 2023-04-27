@@ -202,7 +202,7 @@ async function upload(type, name) {
 async function uploadAll() {
     const directories = fs.readdirSync("./assets");
 
-    for(let directory of directories) {
+    for(let directory of directories.filter((directory) => !directory.includes('.'))) {
         const names = fs.readdirSync(`./assets/${directory}/`);
 
         for(let name of names) {
