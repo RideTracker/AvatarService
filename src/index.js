@@ -1,4 +1,4 @@
-import Jimp from "jimp";
+var Jimp = require("jimp");
 
 export default {
     async fetch(request, env, ctx) {
