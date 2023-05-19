@@ -1,0 +1,14 @@
+name = "ridetracker-avatar-service"
+main = "src/index.js"
+compatibility_date = "2023-04-07"
+usage_model = "bundled"
+node_compat = true
+
+[triggers]
+crons = [ ]
+
+[env.production.vars]
+ENVIRONMENT = "production"
+
+[env.staging.vars]
+ENVIRONMENT = "staging"
