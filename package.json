@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "upload": "node src/upload.js"
+    "upload": "node build/upload.js"
   },
   "author": "",
   "type": "module",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "dotenv": "^16.0.3",
     "sharp": "^0.32.0",
     "uuid": "^9.0.0"
+  },
+  "dependencies": {
+    "jimp": "^0.22.8"
   }
 }
