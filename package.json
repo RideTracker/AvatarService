@@ -4,17 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "npx tsc",
     "upload": "node build/upload.js"
   },
   "author": "",
   "type": "module",
   "license": "ISC",
   "devDependencies": {
-    "dotenv": "^16.0.3",
-    "sharp": "^0.32.0",
-    "uuid": "^9.0.0"
+    "@cloudflare/workers-types": "^4.20230511.0",
+    "@types/itty-router-extras": "^0.4.0",
+    "typescript": "^5.0.4"
   },
   "dependencies": {
-    "jimp": "^0.22.8"
+    "itty-router": "^3.0.12",
+    "itty-router-extras": "^0.4.2"
   }
 }

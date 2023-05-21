@@ -7,8 +7,38 @@ node_compat = true
 [triggers]
 crons = [ ]
 
+[env.production]
+d1_databases = [
+    {
+        binding = "DATABASE",
+        database_name = "ridetracker-avatars",
+        database_id = "d923c3af-ace3-4f50-b7e6-df4682ce0760"
+    },
+
+    {
+        binding = "SERVICE_DATABASE",
+        database_name = "ridetracker",
+        database_id = "4cb96598-71ce-47f5-b556-9ef1bfca42a1"
+    }
+]
+
 [env.production.vars]
 ENVIRONMENT = "production"
+
+[env.staging]
+d1_databases = [
+    {
+        binding = "DATABASE",
+        database_name = "ridetracker-avatars-staging",
+        database_id = "e3ecd1c7-5ccc-4585-a4b2-936ab708e7be"
+    },
+
+    {
+        binding = "SERVICE_DATABASE",
+        database_name = "ridetracker-staging",
+        database_id = "161d4088-c809-4ea3-b10b-412e9ddc7506"
+    }
+]
 
 [env.staging.vars]
 ENVIRONMENT = "staging"

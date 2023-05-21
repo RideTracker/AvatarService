@@ -211,6 +211,13 @@ async function uploadAll() {
     }
 };
 
+async function uploadBucketFile(file, body) {
+    const response = await fetch(`https://${process.env.CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com/${process.env.CLOUDFLARE_BUCKET_NAME}/${file}`, {
+        method: "PUT",
+        body
+    });
+};
+
 const arg = process.argv.filter((_, index) => index > 1).join(" ");
 
 if(arg === "all")
