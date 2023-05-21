@@ -12,6 +12,7 @@ export default function createRouter() {
 
     router.get("/api/ping", withContent, async (request: Request, env: Env) => {
         return Response.json({
+            success: true,
             ping: "pong"
         });
     });
