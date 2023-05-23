@@ -56,6 +56,8 @@ export async function handleRenderAvatarRequest(request: Request, env: Env) {
         });
     }))).flat();
 
+    return Response.json({ layers });
+
     const browser = await puppeteer.launch(env.BROWSER);
     const page = await browser.newPage();
     

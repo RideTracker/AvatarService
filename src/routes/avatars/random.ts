@@ -30,17 +30,17 @@ export async function handleRandomAvatarRequest(request: Request, env: Env) {
     const helmetIndex = Math.floor(Math.random() * (helmets.length + 1));
 
     if(helmetIndex !== helmets.length)
-        combination.push(helmets[helmetIndex]);
+        combination.push({ id: helmets[helmetIndex].id });
 
     const sunglassIndex = Math.floor(Math.random() * (sunglasses.length + 1));
 
     if(sunglassIndex !== sunglasses.length)
-        combination.push(sunglasses[sunglassIndex]);
+        combination.push({ id: sunglasses[sunglassIndex].id });
 
     const wallpaperIndex = Math.floor(Math.random() * (wallpapers.length + 1));
 
     if(wallpaperIndex !== wallpapers.length)
-        combination.unshift(wallpapers[wallpaperIndex]);
+        combination.unshift({ id: wallpapers[wallpaperIndex].id });
 
     return Response.json({
         combination,
