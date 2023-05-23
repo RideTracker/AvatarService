@@ -4,8 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx tsc",
-    "upload": "node build/upload.js"
   },
   "author": "",
   "type": "module",
