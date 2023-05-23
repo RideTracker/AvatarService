@@ -7,6 +7,10 @@ compatibility_flags = [ "nodejs_compat" ]
 [triggers]
 crons = [ ]
 
+[[migrations]]
+tag = "v1"
+new_classes = ["DurableBrowser"]
+
 [env.production]
 browser = { binding = "BROWSER", type = "browser" }
 
@@ -15,8 +19,13 @@ d1_databases = [
     { binding = "SERVICE_DATABASE", database_name = "ridetracker", database_id = "4cb96598-71ce-47f5-b556-9ef1bfca42a1" }
 ]
 
+durable_objects.bindings = [
+    { name = "DURABLE_BROWSER", class_name = "DurableBrowser" }
+]
+
 [env.production.vars]
 ENVIRONMENT = "production"
+CLOUDFLARE_ACCOUNT_ID = "iF-n-0zUOubWqw15Yx-oAg"
 
 [env.staging]
 browser = { binding = "BROWSER", type = "browser" }
@@ -26,5 +35,10 @@ d1_databases = [
     { binding = "SERVICE_DATABASE", database_name = "ridetracker-staging", database_id = "361813f2-1a83-4c3d-9df1-204fc7093b6f" }
 ]
 
+durable_objects.bindings = [
+    { name = "DURABLE_BROWSER", class_name = "DurableBrowser" }
+]
+
 [env.staging.vars]
 ENVIRONMENT = "staging"
+CLOUDFLARE_ACCOUNT_ID = "iF-n-0zUOubWqw15Yx-oAg"

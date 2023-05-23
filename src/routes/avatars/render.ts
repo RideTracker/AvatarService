@@ -49,14 +49,12 @@ export async function handleRenderAvatarRequest(request: Request, env: Env) {
                 const color = avatar.colors?.find((avatarColor: any) => avatarColor.type === image.colorType)?.color ?? colors?.find((avatarColor) => avatarColor.type === image.colorType)?.defaultColor;
 
                 return {
-                    image: image.image,
+                    image: `https://staging.avatar-service.ridetracker.app/cdn-cgi/imagedelivery/${env.CLOUDFLARE_ACCOUNT_ID}/${image.image}/AvatarImage`,
                     color
                 };
             }));
         });
     }))).flat();
-
-    return Response.json({ layers });
 
     const browser = await puppeteer.launch(env.BROWSER);
     const page = await browser.newPage();
@@ -78,6 +76,8 @@ export async function handleRenderAvatarRequest(request: Request, env: Env) {
     ];*/
 
     const result = await page.evaluate(renderAvatar, layers);
+    
+    await browser.close();
 
     return Response.json({
         result,

@@ -5,6 +5,8 @@ declare global {
         [key: string]: string | undefined;
         
         BROWSER: BrowserWorker;
+        DURABLE_BROWSER: DurableObjectNamespace;
+        
         DATABASE: D1Database;
         SERVICE_DATABASE: D1Database;
         

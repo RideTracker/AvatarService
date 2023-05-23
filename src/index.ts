@@ -1,4 +1,5 @@
 import createRouter from "./domains/router";
+import DurableBrowser from "./domains/browsers";
 
 const router = createRouter();
 
@@ -13,3 +14,5 @@ export default {
         return response;
     }
 };
+
+export { DurableBrowser };
