@@ -22,8 +22,8 @@ export default function createRouter() {
 
     router.get("/api/avatars", withAuth, withContent, handleAvatarsRequest);
     router.post("/api/avatars", withAuth, withContent, handleCreateAvatarRequest);
-    router.post("/api/avatars/render/random", withAuth, withContent, handleRenderRandomAvatarRequest);
-    router.post("/api/avatars/random", withAuth, handleRandomAvatarRequest);
+    router.get("/api/avatars/render/random", withAuth, withContent, handleRenderRandomAvatarRequest);
+    router.get("/api/avatars/random", withAuth, handleRandomAvatarRequest);
     router.post("/api/avatars/:avatarId/color", withAuth, withParams, withContent, handleCreateAvatarColorRequest);
     router.post("/api/avatars/:avatarId/image", withAuth, withParams, withContent, handleCreateAvatarImageRequest);
 
