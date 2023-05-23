@@ -1,9 +1,10 @@
 import { createAvatar } from "../../controllers/avatars/createAvatar";
 import { deleteAvatarById } from "../../controllers/avatars/deleteAvatarById";
 import { getAvatarByName } from "../../controllers/avatars/getAvatarByName";
+import createImageDirectUploadUrl from "../../controllers/images/createImageDirectUploadUrl";
 
 export async function handleCreateAvatarRequest(request: Request, env: Env) {
-    const { name, type, image } = request.content;
+    const { name, type } = request.content;
 
     const existingAvatar = await getAvatarByName(env.DATABASE, name);
     
@@ -12,7 +13,12 @@ export async function handleCreateAvatarRequest(request: Request, env: Env) {
 
     const id = existingAvatar?.id ?? crypto.randomUUID();
 
-    const avatar = await createAvatar(env.DATABASE, id, name, type, image, Date.now());
+    const directUploadUrl = await createImageDirectUploadUrl(env, "Avatars_" + name);
+
+    if(!directUploadUrl)
+        return Response.json({ success: false });
+
+    const avatar = await createAvatar(env.DATABASE, id, name, type, directUploadUrl.id, Date.now());
 
     if(!avatar)
         return Response.json({ success: false });
