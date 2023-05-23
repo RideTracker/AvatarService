@@ -31,6 +31,8 @@ export async function handleCreateAvatarRequest(request: Request, env: Env) {
             name: avatar.name,
             type: avatar.type,
             image: avatar.image
-        }
+        },
+
+        uploadUrl: directUploadUrl.url
     });
 };
