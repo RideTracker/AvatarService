@@ -1,4 +1,4 @@
-import { DirectUploadUrlResponse } from "../../models/DirectUploadUrlResponse";
+import { CloudflareImagesResponse } from "../../models/CloudflareImagesResponse";
 
 export default async function createImageDirectUploadUrl(env: Env, id: string): Promise<{ id: string, url: string } | null> {
     const body = new FormData();
@@ -15,7 +15,7 @@ export default async function createImageDirectUploadUrl(env: Env, id: string): 
         body
     });
 
-    const content: DirectUploadUrlResponse = await response.json();
+    const content: CloudflareImagesResponse = await response.json();
 
     if(!content.success || !content.result.id || !content.result.uploadURL)
         return null;

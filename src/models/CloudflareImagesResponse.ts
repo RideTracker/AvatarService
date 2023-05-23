@@ -1,4 +1,4 @@
-export type DirectUploadUrlResponse = {
+export type CloudflareImagesResponse = {
     result: {
         id?: string;
         uploadURL?: string;
