@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "author": "",
   "type": "module",
   "license": "ISC",
@@ -12,6 +11,7 @@
     "@cloudflare/puppeteer": "^0.0.2-alpha",
     "@cloudflare/workers-types": "^4.20230511.0",
     "@types/itty-router-extras": "^0.4.0",
+    "@types/node": "^20.2.3",
     "typescript": "^5.0.4",
     "wrangler": "^3.0.1"
   },

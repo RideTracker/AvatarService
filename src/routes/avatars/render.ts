@@ -4,7 +4,7 @@ import { AvatarLayer } from "../../models/AvatarLayers";
 import { getAvatarImagesByAvatar } from "../../controllers/avatars/images/getAvatarImagesByAvatar";
 import { getAvatarColorByAvatar } from "../../controllers/avatars/colors/getAvatarColorByAvatar";
 
-export const feedRequestSchema = {
+export const renderAvatarSchema = {
     content: {
         avatars: {
             type: "array",
