@@ -13,12 +13,11 @@ export async function handleCreateAvatarRequest(request: Request, env: Env) {
     if(existingAvatar) {
         const existingImages = await getAvatarImagesByAvatar(env.DATABASE, existingAvatar.id) ?? [];
 
-        await Promise.all([
-            deleteAvatarById(env.DATABASE, existingAvatar.id),
+        await deleteAvatarById(env.DATABASE, existingAvatar.id);
+
+        await Promise.allSettled([,
             deleteImage(env, existingAvatar.image)
-        ].concat(existingImages.map((avatarImage) => {
-            return deleteImage(env, avatarImage.image)
-        })));
+        ].concat(existingImages.map((avatarImage) => deleteImage(env, avatarImage.image))));
     }
 
     const id = existingAvatar?.id ?? crypto.randomUUID();
