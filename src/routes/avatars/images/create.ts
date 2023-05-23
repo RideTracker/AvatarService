@@ -11,7 +11,7 @@ export async function handleCreateAvatarImageRequest(request: Request, env: Env)
     if(!avatar)
         return Response.json({ success: false });
 
-    const directUploadUrl = await createImageDirectUploadUrl(env, "Avatars_" + avatar.name + "_" + index);
+    const directUploadUrl = await createImageDirectUploadUrl(env, "Avatars_" + avatar.name + "_layer_" + index);
 
     if(!directUploadUrl)
         return Response.json({ success: false });
