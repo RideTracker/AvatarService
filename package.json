@@ -11,9 +11,11 @@
   "type": "module",
   "license": "ISC",
   "devDependencies": {
+    "@cloudflare/puppeteer": "^0.0.2-alpha",
     "@cloudflare/workers-types": "^4.20230511.0",
     "@types/itty-router-extras": "^0.4.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "wrangler": "^3.0.1"
   },
   "dependencies": {
     "itty-router": "^3.0.12",

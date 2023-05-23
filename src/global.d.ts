@@ -4,6 +4,7 @@ declare global {
     interface Env {
         [key: string]: string | undefined;
         
+        BROWSER: BrowserWorker;
         DATABASE: D1Database;
         SERVICE_DATABASE: D1Database;
         
