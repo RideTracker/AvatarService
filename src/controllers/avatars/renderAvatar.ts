@@ -57,7 +57,7 @@ export default function renderAvatar(layers: AvatarLayer[]) {
             resolve(canvas.toDataURL("image/png"));
         }
         catch(error) {
-            resolve(error);
+            reject(error);
         }
     });
 };
