@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "wrangler dev --env staging",
+    "database": "wrangler d1 execute ridetracker-avatars-dev --local --file=./database.sql"
+  },
   "author": "",
   "type": "module",
   "license": "ISC",

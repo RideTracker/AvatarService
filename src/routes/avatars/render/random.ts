@@ -68,6 +68,13 @@ export async function handleRenderRandomAvatarRequest(request: Request, env: Env
 
     const result = await response.text();
 
+    if(request.headers.get("Accept") === "application/json") {
+        return Response.json({
+            success: true,
+            base64Image: result
+        });
+    }
+    
     return new Response(Buffer.from(result.split(',')[1], "base64"), {
         headers: {
             "Content-Type": "image/png",
