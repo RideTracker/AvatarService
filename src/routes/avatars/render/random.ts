@@ -1,4 +1,3 @@
-import { Buffer } from "node:buffer";
 import puppeteer from "@cloudflare/puppeteer";
 import renderAvatar from "../../../controllers/avatars/renderAvatar";
 import { getAvatarImagesByAvatar } from "../../../controllers/avatars/images/getAvatarImagesByAvatar";
