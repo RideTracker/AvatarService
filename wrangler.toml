@@ -23,9 +23,17 @@ durable_objects.bindings = [
     { name = "DURABLE_BROWSER", class_name = "DurableBrowser" }
 ]
 
+[[ kv_namespaces ]]
+binding = "FEATURE_FLAGS"
+id = "e4051aac3f97408eb005e85eb81bdc97"
+
 [env.production.vars]
 ENVIRONMENT = "production"
 CLOUDFLARE_ACCOUNT_ID = "iF-n-0zUOubWqw15Yx-oAg"
+
+[[ env.production.kv_namespaces ]]
+binding = "FEATURE_FLAGS"
+id = "e9e05d97db9c4e0f8fa1e3784dc4d0ad"
 
 [env.staging]
 browser = { binding = "BROWSER", type = "browser" }
@@ -42,3 +50,7 @@ durable_objects.bindings = [
 [env.staging.vars]
 ENVIRONMENT = "staging"
 CLOUDFLARE_ACCOUNT_ID = "iF-n-0zUOubWqw15Yx-oAg"
+
+[[ env.staging.kv_namespaces ]]
+binding = "FEATURE_FLAGS"
+id = "225cf6788c7447079e5f8dc7b9f1be18"

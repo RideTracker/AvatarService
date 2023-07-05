@@ -12,6 +12,8 @@ declare global {
         
         BUCKET: R2Bucket;
         
+        FEATURE_FLAGS: KVNamespace;
+        
         ENVIRONMENT: "production" | "staging";
         CLOUDFLARE_ACCOUNT_ID: string;
         CLOUDFLARE_API_IMAGES_TOKEN: string;
@@ -19,6 +21,9 @@ declare global {
         GOOGLE_MAPS_API_TOKEN: string;
 
         GITHUB_SHA: string | undefined;
+
+        DISCORD_WEBHOOKS_CLIENT_ID: string;
+        DISCORD_WEBHOOKS_CLIENT_TOKEN: string;
     };
 
     interface RequestWithKey extends Request {
