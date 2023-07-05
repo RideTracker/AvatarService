@@ -1,9 +1,10 @@
 import Client, { sendWebhook } from "@ridetracker/discordwebhooksclient";
 
 export async function triggerAlarm(env: Env, name: string, description: string): Promise<void> {
-    const client = new Client(env.DISCORD_WEBHOOKS_CLIENT_ID, env.DISCORD_WEBHOOKS_CLIENT_TOKEN);
-
-    await sendWebhook(client, "", {
+    await sendWebhook({
+        clientId: env.DISCORD_WEBHOOKS_CLIENT_ID,
+        clientToken: env.DISCORD_WEBHOOKS_CLIENT_TOKEN
+    }, "", {
         title: name,
         type: "rich",
         description: description,
