@@ -7,6 +7,8 @@ import { handleCreateAvatarImageRequest } from "../routes/avatars/images/create"
 import { handleRenderAvatarRequest } from "../routes/avatars/render";
 import { handleRandomAvatarRequest } from "../routes/avatars/random";
 import { handleRenderRandomAvatarRequest } from "../routes/avatars/render/random";
+import { handleUserAvatarsRequest } from "../routes/user/avatars";
+import { handleCreateUserAvatarsRequest } from "../routes/user/avatars/create";
 
 export default function createRouter() {
     const router = ThrowableRouter();
@@ -27,6 +29,9 @@ export default function createRouter() {
     router.get("/api/avatars/random", withAuth, handleRandomAvatarRequest);
     router.post("/api/avatars/:avatarId/color", withAuth, withParams, withContent, handleCreateAvatarColorRequest);
     router.post("/api/avatars/:avatarId/image", withAuth, withParams, withContent, handleCreateAvatarImageRequest);
+
+    router.get("/api/user/avatars", withAuth, handleUserAvatarsRequest);
+    router.post("/api/user/avatars/create", withAuth, handleCreateUserAvatarsRequest);
 
     return router;
 };
