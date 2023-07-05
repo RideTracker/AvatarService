@@ -21,10 +21,10 @@ declare global {
         GITHUB_SHA: string | undefined;
     };
 
-    interface RequestWithKey {
+    interface RequestWithKey extends Request {
         [key: string]: any;
         
-        key: Token;
+        key: Required<Token>;
     };
 };
 

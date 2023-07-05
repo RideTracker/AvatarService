@@ -26,3 +26,11 @@ CREATE TABLE IF NOT EXISTS "avatar_colors" (
 	"timestamp"	bigint NOT NULL,
 	PRIMARY KEY("id")
 );
+
+CREATE TABLE IF NOT EXISTS "user_avatars" (
+    "id" varchar(255) NOT NULL,
+    "user" varchar(255) NOT NULL,
+    "combination" text NOT NULL,
+	"timestamp"	bigint NOT NULL,
+    PRIMARY KEY("id")
+);
