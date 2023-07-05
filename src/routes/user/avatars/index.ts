@@ -12,7 +12,8 @@ export async function handleUserAvatarsRequest(request: RequestWithKey, env: Env
         avatars: avatars.map((avatar) => {
             return {
                 id: avatar.id,
-                combination: avatar.combination
+                combination: avatar.combination,
+                timestamp: avatar.timestamp
             };
         })
     });
