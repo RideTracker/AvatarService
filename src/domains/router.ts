@@ -31,7 +31,7 @@ export default function createRouter() {
     router.post("/api/avatars/:avatarId/image", withAuth, withParams, withContent, handleCreateAvatarImageRequest);
 
     router.get("/api/user/avatars", withAuth, handleUserAvatarsRequest);
-    router.post("/api/user/avatars/create", withAuth, handleCreateUserAvatarsRequest);
+    router.post("/api/user/avatars/create", withAuth, withContent, handleCreateUserAvatarsRequest);
 
     return router;
 };

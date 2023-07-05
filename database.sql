@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS "avatar_colors" (
 	PRIMARY KEY("id")
 );
 
+DROP TABLE IF EXISTS "user_avatars";
 CREATE TABLE IF NOT EXISTS "user_avatars" (
     "id" varchar(255) NOT NULL,
     "user" varchar(255) NOT NULL,
