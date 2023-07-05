@@ -1,18 +1,67 @@
-import getToken from "../controllers/tokens/getToken";
+import { getTokenByKey } from "../controllers/tokens/getTokenByKey";
 
-export async function withAuth(request: Request, env: Env, context: any) {
-    const authorization = request.headers.get("Authorization")?.split(' ');
+export async function withAuth(request: RequestWithKey, env: Env, context: any) {
+    const authorizationHeader = request.headers.get("Authorization");
+    
+    if(!authorizationHeader)
+       return Response.json({ success: false }, { status: 401, statusText: "Unauthorized" });
 
-    if(!authorization)
-        return Response.json({ success: false }, { status: 400, statusText: "Bad Request" });
+    const sections = authorizationHeader.split(' ');
 
-    if(authorization[0] !== "Bearer" || authorization.length !== 2)
-       return Response.json({ success: false }, { status: 400, statusText: "Bad Request" });
+    if(sections.length !== 2)
+       return Response.json({ success: false }, { status: 401, statusText: "Unauthorized" });
 
-    const token = await getToken(env.SERVICE_DATABASE, authorization[1]);
+    const type = sections[0];
+    const authorization = sections[1];
 
-    if(!token)
-        return Response.json({ success: false }, { status: 401, statusText: "Unauthorized" });
+    switch(type) {
+        case "Basic": {
+            const authorizationToken = authorization.split(':');
 
-    request.token = token;
+            if(authorizationToken.length !== 2)
+                return Response.json({ success: false }, { status: 401, statusText: "Unauthorized" });
+
+            const email = authorizationToken[0];
+            const key = authorizationToken[1];
+
+            const token = await getTokenByKey(env.SERVICE_DATABASE, key);
+
+            if(token === null)
+                return Response.json({ success: false }, { status: 401, statusText: "Unauthorized" });
+
+            if(!token.user)
+                return Response.json({ success: false }, { status: 401, statusText: "Unauthorized" });
+       
+            if(token.email !== email)
+                return Response.json({ success: false }, { status: 401, statusText: "Unauthorized" });
+                
+            request.key = {
+                id: token.id,
+                key: token.key,
+                user: token.user,
+                timestamp: token.timestamp
+            };
+
+            break;
+        }
+
+        case "Bearer": {
+            const token = await getTokenByKey(env.SERVICE_DATABASE, authorization);
+
+            if(token.user)
+                return Response.json({ success: false }, { status: 401, statusText: "Unauthorized" });
+
+            request.key = {
+                id: token.id,
+                key: token.key,
+                user: "",
+                timestamp: token.timestamp
+            };
+
+            break;
+        }
+
+        default:
+            return Response.json({ success: false }, { status: 401, statusText: "Unauthorized" });
+    }
 };

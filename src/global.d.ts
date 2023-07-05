@@ -21,11 +21,10 @@ declare global {
         GITHUB_SHA: string | undefined;
     };
 
-    interface Request {
-        request: import("c:/GitHub/RideTracker/AvatarService/src/models/Token").Token;
-        [key: string]: any | undefined;
+    interface RequestWithKey {
+        [key: string]: any;
         
-        token: Token;
+        key: Token;
     };
 };
 
