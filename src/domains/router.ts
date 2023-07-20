@@ -1,5 +1,4 @@
 import { ThrowableRouter, withContent, withParams } from "itty-router-extras";
-import { withAuth } from "../middlewares/auth";
 import { handleAvatarsRequest } from "../routes/avatars";
 import { handleCreateAvatarRequest } from "../routes/avatars/create";
 import { handleCreateAvatarColorRequest } from "../routes/avatars/colors/create";
@@ -9,6 +8,7 @@ import { handleRandomAvatarRequest } from "../routes/avatars/random";
 import { handleRenderRandomAvatarRequest } from "../routes/avatars/render/random";
 import { handleUserAvatarsRequest } from "../routes/user/avatars";
 import { handleCreateUserAvatarsRequest } from "../routes/user/avatars/create";
+import { withAuth } from "@ridetracker/authservice";
 
 export default function createRouter() {
     const router = ThrowableRouter();
@@ -22,16 +22,16 @@ export default function createRouter() {
         });
     });
 
-    router.get("/api/avatars", withAuth, withContent, handleAvatarsRequest);
-    router.post("/api/avatars", withAuth, withContent, handleCreateAvatarRequest);
-    router.post("/api/avatars/render", withAuth, withContent, handleRenderAvatarRequest);
-    router.get("/api/avatars/render/random", withAuth, withContent, handleRenderRandomAvatarRequest);
-    router.get("/api/avatars/random", withAuth, handleRandomAvatarRequest);
-    router.post("/api/avatars/:avatarId/color", withAuth, withParams, withContent, handleCreateAvatarColorRequest);
-    router.post("/api/avatars/:avatarId/image", withAuth, withParams, withContent, handleCreateAvatarImageRequest);
+    router.get("/api/avatars", withAuth("user", "SERVICE_DATABASE"), withContent, handleAvatarsRequest);
+    router.post("/api/avatars", withAuth("user", "SERVICE_DATABASE"), withContent, handleCreateAvatarRequest);
+    router.post("/api/avatars/render", withAuth("user", "SERVICE_DATABASE"), withContent, handleRenderAvatarRequest);
+    router.get("/api/avatars/render/random", withAuth("user", "SERVICE_DATABASE"), withContent, handleRenderRandomAvatarRequest);
+    router.get("/api/avatars/random", withAuth("user", "SERVICE_DATABASE"), handleRandomAvatarRequest);
+    router.post("/api/avatars/:avatarId/color", withAuth("user", "SERVICE_DATABASE"), withParams, withContent, handleCreateAvatarColorRequest);
+    router.post("/api/avatars/:avatarId/image", withAuth("user", "SERVICE_DATABASE"), withParams, withContent, handleCreateAvatarImageRequest);
 
-    router.get("/api/user/avatars", withAuth, handleUserAvatarsRequest);
-    router.post("/api/user/avatars/create", withAuth, withContent, handleCreateUserAvatarsRequest);
+    router.get("/api/user/avatars", withAuth("user", "SERVICE_DATABASE"), handleUserAvatarsRequest);
+    router.post("/api/user/avatars/create", withAuth("user", "SERVICE_DATABASE"), withContent, handleCreateUserAvatarsRequest);
 
     return router;
 };

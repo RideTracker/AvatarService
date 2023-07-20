@@ -1,4 +1,4 @@
-import { Token } from "c:/GitHub/RideTracker/AvatarService/src/models/Token";
+import { Token } from "@ridetracker/authservice";
 
 declare global {
     interface Env {
@@ -29,8 +29,6 @@ declare global {
     interface RequestWithKey extends Request {
         [key: string]: any;
         
-        key: Required<Token>;
+        token: Required<Token>;
     };
 };
-
-export {};
