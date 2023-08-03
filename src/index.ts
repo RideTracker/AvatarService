@@ -2,7 +2,6 @@ import createRouter from "./domains/router";
 import DurableBrowser from "./domains/browsers";
 import { FeatureFlags, VersionFeatureFlags } from "./models/FeatureFlags";
 import getUserAgentGroups from "./controllers/getUserAgentGroups";
-import { triggerAlarm } from "./controllers/alarms/triggerAlarm";
 
 const router = createRouter();
 
@@ -39,7 +38,26 @@ export default {
             const versionFeatureFlags = featureFlags?.versions[userAgent.version.toString()];
 
             if(!versionFeatureFlags) {
-                context.waitUntil(triggerAlarm(env, "User Agent Alarm", `An unrecognized user agent was detected.\n \n\`\`\`\n${userAgent.client}-${userAgent.version.toString()}\n\`\`\`\`\`\`\n${JSON.stringify(featureFlags, null, 4)}\n\`\`\`\n${request.method} ${request.url}\nRemote Address: || ${request.headers.get("CF-Connecting-IP")} ||`));
+                context.waitUntil(env.ANALYTICS_SERVICE.fetch("https://analytics.ridetracker.app/api/error", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Basic ${env.ANALYTICS_SERVICE_CLIENT_ID}:${env.ANALYTICS_SERVICE_CLIENT_TOKEN}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        error: "INVALID_USER_AGENT_ERROR",
+                        data: "An invalid user agent was detected.",
+                        service: "AvatarService",
+                        environment: env.ENVIRONMENT,
+                        payload: JSON.stringify({
+                            request: {
+                                userAgent: request.headers.get("User-Agent"),
+                                resource: `${request.method} ${request.url}`,
+                                remoteAddress: request.headers.get("CF-Connecting-IP")
+                            }
+                        })
+                    })
+                }));
                 
                 return new Response(undefined, {
                     status: 400,
@@ -56,11 +74,31 @@ export default {
 
             const response = await getRequest(request, env, context, versionFeatureFlags);
 
-            if(response.status < 200 || response.status > 299) { 
-                context.waitUntil(new Promise<void>(async (resolve) => {
-                    await triggerAlarm(env, "Unsuccessful Status Code Alarm", `A response has returned an unsuccessfull status code.\n \n\`\`\`\n${response.status} ${response.statusText}\n\`\`\`\`\`\`\n${await response.text()}\n\`\`\`\n${request.method} ${request.url}\nRemote Address: || ${request.headers.get("CF-Connecting-IP")} ||`);
-
-                    resolve();
+            if(response.status >= 500 && response.status <= 599) {
+                context.waitUntil(env.ANALYTICS_SERVICE.fetch("https://analytics.ridetracker.app/api/error", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Basic ${env.ANALYTICS_SERVICE_CLIENT_ID}:${env.ANALYTICS_SERVICE_CLIENT_TOKEN}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        error: "SERVER_ERROR",
+                        data: "A response has returned a server error status code.",
+                        service: "AvatarService",
+                        environment: env.ENVIRONMENT,
+                        payload: JSON.stringify({
+                            response: {
+                                statusCode: response.status,
+                                statusText: response.statusText,
+                                responseBody: await (response.clone()).text()
+                            },
+                            request: {
+                                userAgent: request.headers.get("User-Agent"),
+                                resource: `${request.method} ${request.url}`,
+                                remoteAddress: request.headers.get("CF-Connecting-IP")
+                            }
+                        })
+                    })
                 }));
             }
 
@@ -73,8 +111,28 @@ export default {
         catch(error: any) {
             if(error instanceof Error) {
                 if(error.message.startsWith("D1_")) {
-                    context.waitUntil(triggerAlarm(env, "D1 Error Alarm", `An error was thrown by D1 during execution.\n \n\`\`\`\n${error.message}\n\`\`\`\n${request.method} ${request.url}\nRemote Address: || ${request.headers.get("CF-Connecting-IP")} ||`));
-                
+                    context.waitUntil(env.ANALYTICS_SERVICE.fetch("https://analytics.ridetracker.app/api/error", {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Basic ${env.ANALYTICS_SERVICE_CLIENT_ID}:${env.ANALYTICS_SERVICE_CLIENT_TOKEN}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            error: "D1_ERROR",
+                            data: "An error was thrown by D1 during execution.",
+                            service: "AvatarService",
+                            environment: env.ENVIRONMENT,
+                            payload: JSON.stringify({
+                                error,
+                                request: {
+                                    userAgent: request.headers.get("User-Agent"),
+                                    resource: `${request.method} ${request.url}`,
+                                    remoteAddress: request.headers.get("CF-Connecting-IP")
+                                }
+                            })
+                        })
+                    }));
+
                     return new Response(undefined, {
                         status: 502,
                         statusText: "Bad Gateway"
@@ -82,8 +140,28 @@ export default {
                 }
             }
 
-            context.waitUntil(triggerAlarm(env, "Uncaught Error Alarm", `An uncaught error was thrown during a response.\n \n\`\`\`\n${error}\n\`\`\`\n${request.method} ${request.url}\nRemote Address: || ${request.headers.get("CF-Connecting-IP")} ||`));
-            
+            context.waitUntil(env.ANALYTICS_SERVICE.fetch("https://analytics.ridetracker.app/api/error", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Basic ${env.ANALYTICS_SERVICE_CLIENT_ID}:${env.ANALYTICS_SERVICE_CLIENT_TOKEN}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    error: "SERVER_ERROR",
+                    data: "An uncaught error was thrown during a response.",
+                    service: "AvatarService",
+                    environment: env.ENVIRONMENT,
+                    payload: JSON.stringify({
+                        error,
+                        request: {
+                            userAgent: request.headers.get("User-Agent"),
+                            resource: `${request.method} ${request.url}`,
+                            remoteAddress: request.headers.get("CF-Connecting-IP")
+                        }
+                    })
+                })
+            }));
+
             return new Response(undefined, {
                 status: 500,
                 statusText: "Internal Server Error"

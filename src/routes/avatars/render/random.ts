@@ -50,7 +50,7 @@ export async function handleRenderRandomAvatarRequest(request: Request, env: Env
                 const color = avatar.colors?.find((avatarColor: any) => avatarColor.type === image.colorType)?.color ?? colors?.find((avatarColor) => avatarColor.type === image.colorType)?.defaultColor;
 
                 return {
-                    image: `https://staging.avatar-service.ridetracker.app/cdn-cgi/imagedelivery/${env.CLOUDFLARE_ACCOUNT_ID}/${image.image}/AvatarImage`,
+                    image: `https://ridetracker.app/cdn-cgi/imagedelivery/${env.CLOUDFLARE_ACCOUNT_ID}/${image.image}/AvatarImage`,
                     color
                 };
             }));

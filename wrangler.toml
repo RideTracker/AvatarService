@@ -14,6 +14,10 @@ new_classes = ["DurableBrowser"]
 [env.production]
 browser = { binding = "BROWSER", type = "browser" }
 
+services = [
+    { binding = "ANALYTICS_SERVICE", service = "analytics-service-production" }
+]
+
 d1_databases = [
     { binding = "DATABASE", database_name = "ridetracker-avatars", database_id = "d923c3af-ace3-4f50-b7e6-df4682ce0760" },
     { binding = "SERVICE_DATABASE", database_name = "ridetracker", database_id = "4cb96598-71ce-47f5-b556-9ef1bfca42a1" }
@@ -37,6 +41,10 @@ id = "e9e05d97db9c4e0f8fa1e3784dc4d0ad"
 
 [env.staging]
 browser = { binding = "BROWSER", type = "browser" }
+
+services = [
+    { binding = "ANALYTICS_SERVICE", service = "analytics-service-staging" }
+]
 
 d1_databases = [
     { binding = "DATABASE", database_name = "ridetracker-avatars-staging", database_id = "e3ecd1c7-5ccc-4585-a4b2-936ab708e7be" },

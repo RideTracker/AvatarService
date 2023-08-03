@@ -21,9 +21,10 @@ declare global {
         GOOGLE_MAPS_API_TOKEN: string;
 
         GITHUB_SHA: string | undefined;
-
-        DISCORD_WEBHOOKS_CLIENT_ID: string;
-        DISCORD_WEBHOOKS_CLIENT_TOKEN: string;
+        
+        ANALYTICS_SERVICE: Fetcher;
+        ANALYTICS_SERVICE_CLIENT_ID: string;
+        ANALYTICS_SERVICE_CLIENT_TOKEN: string;
     };
 
     interface RequestWithKey extends Request {
